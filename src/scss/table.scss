@@ -56,7 +56,6 @@
     white-space: nowrap;
     outline: none;
 
-
     &.selected {
       border: none;
       outline: 2px solid #3c74ff;
@@ -64,4 +63,9 @@
     }
   }
 
+}
+
+[contentEditable]:empty:not(:focus):before{
+  content:attr(data-placeholder);
+  opacity: 0.1;
 }
