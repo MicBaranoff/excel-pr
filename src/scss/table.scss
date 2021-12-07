@@ -9,11 +9,27 @@
   overflow-x: auto;
   padding-bottom: 2px;
 
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+
   .row {
     display: flex;
     flex-direction: row;
     min-height: 20px;
     height: $row-height;
+
   }
 
   .row-info {
@@ -25,6 +41,8 @@
     border: 1px solid $border-color;
     background: #f8f9fa;
     border-top: none;
+    position: relative;
+    user-select: none;
   }
 
   .row-data {
@@ -42,12 +60,15 @@
     border-top: 0;
     border-left: 0;
     height: 100%;
+    position: relative;
+    user-select: none;
   }
 
   .cell {
     min-width: 40px;
     padding: 5px;
     width: $cell-width;
+    min-height: 20px;
     height: 100%;
     border: 1px solid #e2e3e3;
     border-top: 0;
@@ -56,16 +77,85 @@
     white-space: nowrap;
     outline: none;
 
+    &:focus{
+      outline: 2px solid $primary-color;
+      position: relative;
+    }
+
     &.selected {
       border: none;
-      outline: 2px solid #3c74ff;
+      outline: 2px solid $primary-color;
       z-index: 2;
     }
   }
-
+  .col-resize, .row-resize{
+    position: absolute;
+    right: 0;
+    background: $primary-color;
+    opacity: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    &:not(.resize-shadow):hover{
+      opacity: 1;
+    }
+    &:after{
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+  .resize-active{
+    opacity: 1;
+    &:after{
+      opacity: 1;
+    }
+  }
+  .resize-shadow{
+    right: 101%;
+    bottom: 101%;
+    z-index: 10;
+    bottom: auto;
+  }
+  .col-resize{
+    top: 0;
+    width: 4px;
+    height: 24px;
+    &:not(.resize-shadow):hover{
+      cursor: col-resize;
+    }
+    &:after{
+      position: absolute;
+      content: '';
+      width: 2px;
+      top: 100%;
+      height: 100vh;
+      background: $primary-color;
+      right: 0;
+    }
+  }
+  .row-resize{
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 4px;
+    &:not(.resize-shadow){
+      left: -1px;
+    }
+    &:not(.resize-shadow):hover{
+      cursor: row-resize;
+    }
+    &:after{
+      position: absolute;
+      content: '';
+      width: 100vw;
+      bottom: 0;
+      height: 2px;
+      background: $primary-color;
+      left: 0;
+    }
+  }
 }
 
 [contentEditable]:empty:not(:focus):before{
-  content:attr(data-placeholder);
+  content:attr(data-cellid);
   opacity: 0.1;
 }
